@@ -1,5 +1,6 @@
 package elevator.models;
 
+import elevator.Logger;
 import elevator.models.requests.Call;
 import elevator.models.requests.Go;
 
@@ -86,7 +87,7 @@ public class Elevator {
         actionCountSinceLastClose = 0;
         lastDirection = null;
         floorHistory.clear();
-       // Logger.info(cause);
+        Logger.info(cause);
     }
 
     private void removeDoneRequests() {
@@ -164,7 +165,7 @@ public class Elevator {
         int scoreToDown = 2 * countGoTo(Direction.DOWN) + countCallFrom(Direction.DOWN);
 
         if(floorHistory.hasCycle()){
-            //Logger.info("Pre-cycle detected! " + floorHistory.toString());
+            Logger.info("Pre-cycle detected! " + floorHistory.toString());
             if(Direction.DOWN.equals(lastDirection) && floor > LOWER_FLOOR){
                 nextDirection = Direction.DOWN;
             }
@@ -213,7 +214,7 @@ public class Elevator {
 
         //si le nombre d'actions depuis la derniere fermeture de la porte est supérieur à un aller-retour
         if(actionCountSinceLastClose > 2 *(HIGHER_FLOOR - LOWER_FLOOR) ){
-            //Logger.info(nextDirection != null ? nextDirection.name() : "NEXT DIRECTION IS NULL");
+            Logger.info(nextDirection != null ? nextDirection.name() : "NEXT DIRECTION IS NULL");
             nextCommand = Command.RESET;
         }
 

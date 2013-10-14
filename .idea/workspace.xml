@@ -94,10 +94,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/elevator/models/Elevator.java">
           <provider selected="true" editor-type-id="text-editor">
             <state line="248" column="22" selection-start="6556" selection-end="6556" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#599#605#0" expanded="true" />
-              </folding>
+              <folding />
             </state>
           </provider>
         </entry>
@@ -458,7 +455,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="1677" y="0" width="1686" height="1027" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -653,10 +650,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/elevator/models/Elevator.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="248" column="22" selection-start="6556" selection-end="6556" vertical-scroll-proportion="0.0">
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#599#605#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>

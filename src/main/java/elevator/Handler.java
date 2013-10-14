@@ -13,16 +13,13 @@ import org.eclipse.jetty.server.handler.AbstractHandler;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.logging.Logger;
 
 public class Handler extends AbstractHandler {
 
-    private static final String DEFAULT_PORT = "8080";
-    private final Logger logger;
+    private static final String DEFAULT_PORT = "8888";
     private final Elevator elevator;
 
     public Handler() {
-        logger = Logger.getGlobal();
         elevator = Elevator.getInstance();
     }
 
@@ -33,7 +30,7 @@ public class Handler extends AbstractHandler {
                 synchronized (elevator) {
                     Command nextCommand = elevator.getNextCommand();
                     if (Command.RESET.equals(nextCommand)) {
-                        logger.warning("RESET (Cause loop detected)");
+                        Logger.warning("Elevator reset cause loop detected");
                     } else {
                         baseRequest.getResponse().getWriter().println(nextCommand.name());
                     }
@@ -41,15 +38,23 @@ public class Handler extends AbstractHandler {
                 break;
             case "/call":
                 synchronized (elevator) {
-                    Integer atFloor = Integer.valueOf(baseRequest.getParameter("atFloor"));
-                    Direction to = Direction.valueOf(baseRequest.getParameter("to"));
-                    elevator.addCall(new Call(atFloor, to));
+                    try {
+                        Integer atFloor = Integer.valueOf(baseRequest.getParameter("atFloor"));
+                        Direction to = Direction.valueOf(baseRequest.getParameter("to"));
+                        elevator.addCall(new Call(atFloor, to));
+                    } catch (NumberFormatException e) {
+                        Logger.warning("'atFloor' or 'to' param is not a number");
+                    }
                 }
                 break;
             case "/go":
                 synchronized (elevator) {
-                    Integer floorToGo = Integer.valueOf(baseRequest.getParameter("floorToGo"));
-                    elevator.addGo(new Go(floorToGo));
+                    try {
+                        Integer floorToGo = Integer.valueOf(baseRequest.getParameter("floorToGo"));
+                        elevator.addGo(new Go(floorToGo));
+                    } catch (NumberFormatException e) {
+                        Logger.warning("'floorToGo' param is not a number");
+                    }
                 }
                 break;
             case "/userHasEntered":
@@ -69,14 +74,14 @@ public class Handler extends AbstractHandler {
                 }
                 break;
             default:
-                logger.warning(target);
+                Logger.warning(target);
         }
         baseRequest.setHandled(true);
     }
 
-    private static int getPort(){
+    private static int getPort() {
         String port = System.getenv("PORT");
-        if(port == null){
+        if (port == null) {
             port = System.getProperty("app.port", DEFAULT_PORT);
         }
         return Integer.valueOf(port);

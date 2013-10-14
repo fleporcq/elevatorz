@@ -144,7 +144,7 @@ public class Elevator {
         crashTest.reset();
         lastDirection = null;
         floorHistory.clear();
-        Logger.info(cause);
+        Logger.info("Elevator reset, cause : " + cause);
     }
 
     private void removeDoneRequests() {

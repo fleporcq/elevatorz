@@ -4,6 +4,8 @@ public class Logger {
 
     private static java.util.logging.Logger logger;
 
+    private Logger(){}
+
     private static java.util.logging.Logger getLogger() {
         if (logger == null) {
             logger = java.util.logging.Logger.getAnonymousLogger();

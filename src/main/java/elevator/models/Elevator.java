@@ -58,16 +58,16 @@ public class Elevator {
        return userCount;
     }
 
-    public void addCall(Call call) {
-        calls.add(call);
+    public void call(int atFloor, Direction direction) {
+        calls.add(new Call(atFloor, direction));
     }
 
     public List<Call> getCalls() {
         return calls;
     }
 
-    public void addGo(Go go) {
-        gos.add(go);
+    public void go(int floorToGo) {
+        gos.add(new Go(floorToGo));
     }
 
     public List<Go> getGos() {
@@ -96,14 +96,6 @@ public class Elevator {
             lastDirection = Direction.UP;
         } else {
             throw new IllegalStateException("the elevator is already at the highest floor");
-        }
-    }
-
-    public void goTo(int floorToGo) {
-        if (floorToGo >= LOWER_FLOOR && floorToGo <= HIGHER_FLOOR) {
-            floor = floorToGo;
-        } else {
-            throw new IllegalStateException("the elevator is going outside");
         }
     }
 
@@ -162,7 +154,7 @@ public class Elevator {
         }
     }
 
-    public Command getNextCommand() {
+    public Command nextCommand() {
         Command nextCommand = engine.computeNextCommand();
         execute(nextCommand);
         return crashTest.isCrashed() ? Command.RESET : nextCommand;

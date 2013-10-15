@@ -4,8 +4,6 @@ package elevator;
 import elevator.models.Command;
 import elevator.models.Direction;
 import elevator.models.Elevator;
-import elevator.models.requests.Call;
-import elevator.models.requests.Go;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.AbstractHandler;
@@ -28,7 +26,7 @@ public class Handler extends AbstractHandler {
         switch (target) {
             case "/nextCommand":
                 synchronized (elevator) {
-                    Command nextCommand = elevator.getNextCommand();
+                    Command nextCommand = elevator.nextCommand();
                     if (Command.RESET.equals(nextCommand)) {
                         Logger.warning("Elevator reset cause loop detected");
                     } else {
@@ -39,9 +37,9 @@ public class Handler extends AbstractHandler {
             case "/call":
                 synchronized (elevator) {
                     try {
-                        Integer atFloor = Integer.valueOf(baseRequest.getParameter("atFloor"));
+                        int atFloor = Integer.valueOf(baseRequest.getParameter("atFloor"));
                         Direction to = Direction.valueOf(baseRequest.getParameter("to"));
-                        elevator.addCall(new Call(atFloor, to));
+                        elevator.call(atFloor, to);
                     } catch (NumberFormatException e) {
                         Logger.warning("'atFloor' or 'to' param is not a number");
                     }
@@ -50,8 +48,8 @@ public class Handler extends AbstractHandler {
             case "/go":
                 synchronized (elevator) {
                     try {
-                        Integer floorToGo = Integer.valueOf(baseRequest.getParameter("floorToGo"));
-                        elevator.addGo(new Go(floorToGo));
+                        int floorToGo = Integer.valueOf(baseRequest.getParameter("floorToGo"));
+                        elevator.go(floorToGo);
                     } catch (NumberFormatException e) {
                         Logger.warning("'floorToGo' param is not a number");
                     }

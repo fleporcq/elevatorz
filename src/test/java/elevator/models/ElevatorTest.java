@@ -1,113 +1,100 @@
 package elevator.models;
 
-import org.junit.Assert;
 import org.junit.Test;
+
+import static elevator.models.assertions.ElevatorAssert.assertThat;
+
 
 public class ElevatorTest {
 
+    private Elevator elevator = Elevator.getInstance();
+
     @Test
-    public void should_be_open(){
-        Elevator elevator = Elevator.getInstance();
-        elevator.reset("Elevator should_be_open Test");
-        elevator.open();
-        Assert.assertTrue(elevator.isOpen());
+    public void should_be_clean_after_reset() {
+        assertThat(elevator).reset("Elevator should_be_clean_after_reset Test").isReset();
     }
 
     @Test
-    public void should_be_closed(){
-        Elevator elevator = Elevator.getInstance();
-        elevator.reset("Elevator should_be_closed Test");
-        elevator.open();
-        elevator.close();
-        Assert.assertFalse(elevator.isOpen());
+    public void should_be_open() {
+        assertThat(elevator).reset("Elevator should_be_open Test")
+                .open()
+                .isOpen();
     }
 
     @Test
-    public void should_be_clean_after_reset(){
-        Elevator elevator = Elevator.getInstance();
-        elevator.reset("Elevator should_be_clean_after_reset Test");
-        Assert.assertEquals(elevator.getFloor(), Elevator.LOWER_FLOOR);
-        Assert.assertFalse(elevator.isOpen());
-        Assert.assertEquals(elevator.getUserCount(), 0);
-        Assert.assertEquals(elevator.getLastDirection(), null);
-        Assert.assertEquals(elevator.getFloorHistory().size(), 0);
-        Assert.assertEquals(elevator.getCalls().size(), 0);
-        Assert.assertEquals(elevator.getGos().size(), 0);
+    public void should_be_closed() {
+        assertThat(elevator).reset("Elevator should_be_closed Test")
+                .open()
+                .close()
+                .isClosed();
     }
 
     @Test
-    public void should_throw_already_closed(){
-        Elevator elevator = Elevator.getInstance();
-        elevator.reset("Elevator should_throw_already_closed Test");
+    public void should_throw_already_closed() {
         try {
-            elevator.close();
-            Assert.fail();
-        }catch (IllegalStateException e){
+            assertThat(elevator).reset("Elevator should_throw_already_closed Test")
+                    .close()
+                    .fail();
+        } catch (IllegalStateException e) {
+        }
+    }
+
+    @Test
+    public void should_throw_already_open() {
+        try {
+            assertThat(elevator).reset("Elevator should_throw_already_open Test")
+                    .open()
+                    .open()
+                    .fail();
+        } catch (IllegalStateException e) {
 
         }
     }
 
     @Test
-    public void should_throw_already_open(){
-        Elevator elevator = Elevator.getInstance();
-        elevator.reset("Elevator should_throw_already_open Test");
+    public void should_throw_already_at_the_lowest_floor() {
         try {
-            elevator.open();
-            elevator.open();
-            Assert.fail();
-        }catch (IllegalStateException e){
+            assertThat(elevator).reset("Elevator should_throw_already_at_the_lowest_floor Test")
+                    .moveToDown()
+                    .fail();
+        } catch (IllegalStateException e) {
 
         }
     }
 
     @Test
-    public void should_be_closed_after_reset(){
-        Elevator elevator = Elevator.getInstance();
-        elevator.reset("Elevator should_be_closed_after_reset Test");
-        Assert.assertFalse(elevator.isOpen());
-    }
-
-    @Test
-    public void should_throw_already_at_the_lowest_floor(){
-        Elevator elevator = Elevator.getInstance();
-        elevator.reset("Elevator should_throw_already_at_the_lowest_floor Test");
-        elevator.goTo(0);
+    public void should_throw_already_at_the_highest_floor() {
         try {
-            elevator.moveToDown();
-            Assert.fail();
-        }catch (IllegalStateException e){
+            assertThat(elevator).reset("Elevator should_throw_already_at_the_highest_floor Test")
+                    .moveToUp()
+                    .moveToUp()
+                    .moveToUp()
+                    .moveToUp()
+                    .moveToUp()
+                    .moveToUp()
+                    .fail();
+        } catch (IllegalStateException e) {
 
         }
     }
 
     @Test
-    public void should_throw_already_at_the_highest_floor(){
-        Elevator elevator = Elevator.getInstance();
-        elevator.reset("Elevator should_throw_already_at_the_highest_floor Test");
-        elevator.goTo(5);
-        try {
-            elevator.moveToUp();
-            Assert.fail();
-        }catch (IllegalStateException e){
-
-        }
+    public void should_do_things() {
+        assertThat(elevator).reset("Elevator should_do_things Test")
+                .call(4, Direction.DOWN)
+                .tick().isAtFloor(1).isClosed()
+                .tick().isAtFloor(2).isClosed()
+                .tick().isAtFloor(3).isClosed()
+                .tick().isAtFloor(4).isClosed()
+                .tick().isOpen()
+                .tick().isClosed()
+                .go(2)
+                .tick().isAtFloor(3).isClosed()
+                .tick().isAtFloor(2).isClosed()
+                .tick().isOpen()
+                .tick().isClosed()
+                .tick().isAtFloor(1).isClosed();
     }
 
-    @Test
-    public void should_throw_is_going_outside(){
-        Elevator elevator = Elevator.getInstance();
-        elevator.reset("Elevator should_throw_is_going_outside Test");
-        try {
-            elevator.goTo(-1);
-            Assert.fail();
-        }catch (IllegalStateException e){
 
-        }
-        try {
-            elevator.goTo(6);
-            Assert.fail();
-        }catch (IllegalStateException e){
-
-        }
-    }
 }

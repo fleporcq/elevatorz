@@ -2,15 +2,13 @@ package elevator.models.assertions;
 
 import elevator.models.Direction;
 import elevator.models.Elevator;
-import org.fest.assertions.Assertions;
-import org.fest.assertions.GenericAssert;
+import org.assertj.core.api.AbstractAssert;
+import org.assertj.core.api.Assertions;
 
-
-
-public class ElevatorAssert extends GenericAssert<ElevatorAssert, Elevator> {
+public class ElevatorAssert extends AbstractAssert<ElevatorAssert, Elevator> {
 
     protected ElevatorAssert(Elevator actual) {
-        super(ElevatorAssert.class, actual);
+        super(actual, ElevatorAssert.class);
     }
     public static ElevatorAssert assertThat(Elevator actual) {
         return new ElevatorAssert(actual);

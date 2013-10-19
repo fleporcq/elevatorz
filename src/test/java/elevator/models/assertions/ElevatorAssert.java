@@ -79,9 +79,4 @@ public class ElevatorAssert extends AbstractAssert<ElevatorAssert, Elevator> {
         return this;
     }
 
-    public ElevatorAssert fail() {
-        fail();
-        return this;
-    }
-
 }

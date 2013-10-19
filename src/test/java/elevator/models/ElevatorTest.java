@@ -29,53 +29,34 @@ public class ElevatorTest {
                 .isClosed();
     }
 
-    @Test
+    @Test(expected = IllegalStateException.class)
     public void should_throw_already_closed() {
-        try {
             assertThat(elevator).reset("Elevator should_throw_already_closed Test")
-                    .close()
-                    .fail();
-        } catch (IllegalStateException e) {
-        }
+                    .close();
     }
 
-    @Test
+    @Test(expected = IllegalStateException.class)
     public void should_throw_already_open() {
-        try {
             assertThat(elevator).reset("Elevator should_throw_already_open Test")
                     .open()
-                    .open()
-                    .fail();
-        } catch (IllegalStateException e) {
-
-        }
+                    .open();
     }
 
-    @Test
+    @Test(expected = IllegalStateException.class)
     public void should_throw_already_at_the_lowest_floor() {
-        try {
             assertThat(elevator).reset("Elevator should_throw_already_at_the_lowest_floor Test")
-                    .moveToDown()
-                    .fail();
-        } catch (IllegalStateException e) {
-
-        }
+                    .moveToDown();
     }
 
-    @Test
+    @Test(expected = IllegalStateException.class)
     public void should_throw_already_at_the_highest_floor() {
-        try {
             assertThat(elevator).reset("Elevator should_throw_already_at_the_highest_floor Test")
                     .moveToUp()
                     .moveToUp()
                     .moveToUp()
                     .moveToUp()
                     .moveToUp()
-                    .moveToUp()
-                    .fail();
-        } catch (IllegalStateException e) {
-
-        }
+                    .moveToUp();
     }
 
     @Test
@@ -95,6 +76,5 @@ public class ElevatorTest {
                 .tick().isClosed()
                 .tick().isAtFloor(1).isClosed();
     }
-
 
 }
